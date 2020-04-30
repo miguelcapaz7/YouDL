@@ -25,7 +25,7 @@ class MainController(tk.Frame):
 
     def download_callback(self):
         """Downloads a YouTube video with the specified URL"""
-        link = self._main_window.method1()  # returns the input from the entry box
+        link = self._main_window.get_link()  # returns the input from the entry box
         yt = YouTube(link)  # creates a YouTube object
         video = yt.streams.first()  # chooses the first format available
         file_location = video.download(os.getcwd() +
@@ -49,7 +49,7 @@ class MainController(tk.Frame):
             self._video_titles.append(title)
 
         # inserts the titles to the tkinter listbox
-        self._main_window.add_titles_to_listbox(self._video_titles)
+        self._main_window.insert_to_listbox(self._video_titles)
 
 
 if __name__ == "__main__":
