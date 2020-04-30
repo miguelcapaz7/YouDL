@@ -23,7 +23,7 @@ class MainController(tk.Frame):
         # call this function to add all the names to the list at startup
         self.list_titles_callback()
 
-    def download_callback(self):
+    def download_callback(self, event):
         """Downloads a YouTube video with the specified URL"""
         link = self._main_window.get_link()  # returns the input from the entry box
         yt = YouTube(link)  # creates a YouTube object
@@ -32,7 +32,7 @@ class MainController(tk.Frame):
                                    "\\YouTube_Downloads")  # downloads the video to the
                                                             # specified directory
 
-        msg = yt.title, " has been downloaded."
+        msg = "Video has been downloaded."
         messagebox.showinfo(title="Downloaded", message=msg)
         self.list_titles_callback()
 
@@ -44,8 +44,8 @@ class MainController(tk.Frame):
 
         # adds all the downloaded files to the video_titles list
         for video_file in os.listdir(os.getcwd() + "\\YouTube_Downloads"):
-            video_file.split(".")
-            title = video_file[0]
+            split_filename = video_file.split(".")
+            title = split_filename[0]
             self._video_titles.append(title)
 
         # inserts the titles to the tkinter listbox
