@@ -19,8 +19,11 @@ class MainWindow(Frame):
         # define entry box here
 
         # (optional) we can add a scrollbar for listbox here
-
+        listbox = Listbox(right_frame, height="20", width="20")
+        listbox.pack(side=LEFT)
+        
         # define buttons here
+
 
     # methods are defined here (outside of __init__() )
     def method1(self):
