@@ -10,7 +10,7 @@ class MainWindow(Frame):
         parent.title('Video Downloader')
 
         def insert_to_listbox(event):
-            listbox.insert(END, entry_link.get())
+            self.listbox.insert(END, entry_link.get())
 
         # add a menu here
         main_menu = Menu(parent)
@@ -35,8 +35,8 @@ class MainWindow(Frame):
         entry_link.pack(side=LEFT)
 
         # (optional) we can add a scrollbar for listbox here
-        listbox = Listbox(right_frame, height="30", width="50")
-        listbox.pack()
+        self.listbox = Listbox(right_frame, height="30", width="50")
+        self.listbox.pack()
         # define buttons here
         download_button = Button(left_frame, text="Download", fg="white", bg="black")
         download_button.bind("<Button-1>", insert_to_listbox)
