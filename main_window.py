@@ -37,7 +37,12 @@ class MainWindow(Frame):
         # define buttons here
         download_button = Button(left_frame, text="Download", fg="white", bg="black")
         download_button.bind("<Button-1>", contoller.download_callback)
-        download_button.pack(side=BOTTOM)
+        download_button.pack(side=TOP)
+
+        rename_button = Button(left_frame, text="Rename", fg="white", bg="black")
+       #rename_button.bind("<Button-1>", contoller.rename_callback)
+        rename_button.pack(side=BOTTOM)
+
 
     # methods are defined here (outside of __init__() )
     def insert_to_listbox(self, titles):
