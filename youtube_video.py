@@ -20,22 +20,12 @@ class YouTubeVideo(Base):
     def __init__(self, title: str, author: str, resolution: str, frame_rate: str,
                  pathname: str, filename: str):
         """This is the constructor that creates a youtube instance"""
-        if not isinstance(title, str):
-            raise ValueError("Video title is invalid.")
-        else:
-            self.title = title
-        if not isinstance(author, str):
-            raise ValueError("Author of video is invalid.")
-        else:
-            self.author = author
-        if not isinstance(resolution, str):
-            raise ValueError("Resolution is invalid.")
-        else:
-            self.resolution = resolution
-        if not isinstance(frame_rate, str):
-            raise ValueError("Frame rate is invalid.")
-        else:
-            self.frame_rate = frame_rate
+
+        self.title = title
+        self.author = author
+        self.resolution = resolution
+        self.frame_rate = frame_rate
+
         if not YouTubeVideo.__validate_filepath(pathname, filename):
             raise ValueError("The file path cannot be found.")
         else:
