@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import messagebox
 from main_window import MainWindow
 import os
+import requests
 
 
 class MainController(tk.Frame):
@@ -24,7 +25,8 @@ class MainController(tk.Frame):
         self.list_titles_callback()
 
     def download_callback(self, event):
-        """Downloads a YouTube video with the specified URL"""
+        """Downloads a YouTube video with the specified URL
+        Posts the video data to the API"""
         link = self._main_window.get_link()  # returns the input from the entry box
         yt = YouTube(link)  # creates a YouTube object
         video = yt.streams.first()  # chooses the first format available
@@ -32,21 +34,31 @@ class MainController(tk.Frame):
                                    "\\YouTube_Downloads")  # downloads the video to the
                                                             # specified directory
 
+        # creates a dictionary with the videos properties
+        data = {'title': yt.title,
+                'author': yt.author,
+                'resolution': video.resolution,
+                'frame_rate': video.fps,
+                'pathname': os.getcwd() + "\\YouTube_Downloads\\",
+                'filename': os.path.basename(file_location)
+                }
+
+        # posts data to API
+        requests.post("http://localhost:5000/videos", json=data)
         msg = "Video has been downloaded."
         messagebox.showinfo(title="Downloaded", message=msg)
         self.list_titles_callback()
 
     def list_titles_callback(self):
         """ Lists video titles in listbox.
-        Currently, this is reading the files from the YouTube Downloads directory.
-        We are going to change this so it reads the titles from the database (sprint 2)"""
+        Gets all the videos stored in the database and adds the title"""
         self._video_titles.clear()  # removes all items in the list
 
-        # adds all the downloaded files to the video_titles list
-        for video_file in os.listdir(os.getcwd() + "\\YouTube_Downloads"):
-            split_filename = video_file.split(".")
-            title = split_filename[0]
-            self._video_titles.append(title)
+        # get request to the API and returns a list of videos
+        response = requests.get("http://localhost:5000/videos/all")
+        video_list = response.json()
+        for video in video_list:
+            self._video_titles.append(video['title'])
 
         # inserts the titles to the tkinter listbox
         self._main_window.insert_to_listbox(self._video_titles)
