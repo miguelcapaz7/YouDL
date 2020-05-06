@@ -57,3 +57,21 @@ class YouTubeManager:
         session.close()
 
         return all_videos
+
+    def delete_video(self, filename):
+        """ Deletes a video from the database """
+        if filename is None or type(filename) != str:
+            raise ValueError("Invalid Filename")
+
+        session = self._db_session()
+
+        for video in self.get_all_videos():
+            if video is None:
+                session.close()
+                raise ValueError("Video does not exist")
+
+            if filename == video.filename:
+                session.delete(video)
+                session.commit()
+
+                session.close()
