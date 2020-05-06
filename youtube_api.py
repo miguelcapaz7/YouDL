@@ -78,5 +78,26 @@ def get_all_videos():
     return response
 
 
+@app.route('/videos/<string:filename>', methods=['DELETE'])
+def delete_video(filename):
+    """ Delete an existing video from the YouTube Manager """
+
+    try:
+        youtube_mgr.delete_video(filename)
+
+        response = app.response_class(
+            status=200
+        )
+    except ValueError as e:
+        status_code = 400
+        if str(e) == "Video does not exist":
+            status_code = 404
+
+        response = app.response_class(
+            response=str(e),
+            status=status_code
+        )
+
+
 if __name__ == "__main__":
     app.run()
