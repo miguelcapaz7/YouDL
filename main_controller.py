@@ -63,6 +63,31 @@ class MainController(tk.Frame):
         # inserts the titles to the tkinter listbox
         self._main_window.insert_to_listbox(self._video_titles)
 
+    def delete_callback(self):
+        """ Deletes selected video from the library. """
+        index = self._main_window.get_index()   # returns index of title in listbox
+        if self._main_window.get_title() == "":    # checks if you selected a video before deleting
+            msg_str = "You must select a video first."
+            messagebox.showinfo(title="Error", message=msg_str)
+        else:
+            # gets a list of all the videos in the database
+            get_response = requests.get("http://localhost:5000/videos/all")
+            video_list = get_response.json()
+            video = video_list[index]   # gets the specific video you chose
+            filename = video['filename']
+            del_response = requests.delete(
+                        "http://localhost:5000/videos/" + filename
+                        )   # sends a delete request to the API
+
+            if del_response.status_code == 200:
+                msg_str = video['title'] + " has been deleted from library"
+                messagebox.showinfo(title="Song Added", message=msg_str)
+                self.list_titles_callback()
+                os.remove(video['pathname'] + filename)
+            else:
+                msg_str = del_response.content
+                messagebox.showinfo(title="Song Deleted", message=msg_str)
+
 
 if __name__ == "__main__":
     """ Create Tk window manager and a main window. Start the main loop """
