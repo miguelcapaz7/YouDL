@@ -43,6 +43,11 @@ class MainWindow(Frame):
        #rename_button.bind("<Button-1>", contoller.rename_callback)
         rename_button.pack(side=BOTTOM)
 
+        play_button = Button(left_frame, text="Play", fg="white", bg="green")
+        play_button.pack(side=BOTTOM)
+
+        delete_button = Button(left_frame, text="Delete", fg="white", bg="red")
+        delete_button.pack(side=BOTTOM)
 
     # methods are defined here (outside of __init__() )
     def insert_to_listbox(self, titles):
