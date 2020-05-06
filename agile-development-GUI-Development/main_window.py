@@ -33,6 +33,7 @@ class MainWindow(Frame):
 
         # (optional) we can add a scrollbar for listbox here
         self.listbox = Listbox(right_frame, height="30", width="50")
+        #self.listbox.bind("<Button-3>", rename)
         self.listbox.pack()
         # define buttons here
         download_button = Button(left_frame, text="Download", fg="white", bg="black")
@@ -42,6 +43,12 @@ class MainWindow(Frame):
         rename_button = Button(left_frame, text="Rename", fg="white", bg="black")
        #rename_button.bind("<Button-1>", contoller.rename_callback)
         rename_button.pack(side=BOTTOM)
+        
+        play_button = Button(left_frame, text="Play", fg="white", bg="green")
+        play_button.pack(side=BOTTOM)
+        
+        delete_button = Button(left_frame, text="Delete", fg="white", bg="red")
+        delete_button.pack(side=BOTTOM)
 
 
     # methods are defined here (outside of __init__() )
@@ -54,3 +61,8 @@ class MainWindow(Frame):
     def get_link(self):
         """ returns the URL entered in the entry box"""
         return self.entry_link.get()
+        
+   
+    #def rename(self):
+    #    """ Renames file name in entry box """
+    #    print("Did it work?")
