@@ -2,6 +2,7 @@ from pytube import YouTube
 import tkinter as tk
 from tkinter import messagebox
 from main_window import MainWindow
+from rename_window import RenameWindow
 import os
 import requests
 
@@ -63,6 +64,49 @@ class MainController(tk.Frame):
         # inserts the titles to the tkinter listbox
         self._main_window.insert_to_listbox(self._video_titles)
 
+    def play_video(self):
+        """Plays the selected video"""
+        index = self._main_window.get_index()
+        if self._main_window.get_title() == "":
+            msg_str = "You must select a video first."
+            messagebox.showinfo(title="Error", message=msg_str)
+        else:
+            response = requests.get("http://localhost:5000/videos/all")
+            video_list = response.json()
+            video = video_list[index]
+            file_location = video['pathname'] + video['filename']
+            os.startfile(file_location)
+
+    def rename_window_popup(self):
+        """Launches the Rename Window"""
+        title = self._main_window.get_title()
+        if title == "":
+            msg_str = "You must select a video first to rename."
+            messagebox.showinfo(title="Error", message=msg_str)
+        else:
+            self.rename_win = tk.Toplevel()
+            self.rename = RenameWindow(self.rename_win, self, title)
+
+    def update_title(self, event):
+        """Updates the title of the video - sends request to API"""
+        index = self._main_window.get_index()
+        form_data = self.rename.get_form_data()
+        get_response = requests.get("http://localhost:5000/videos/all")
+        video_list = get_response.json()
+        video = video_list[index]
+
+        response = requests.put("http://localhost:5000/videos/title/" +
+                                video['filename'], json=form_data)
+
+        if response.status_code == 200:
+            message = "Video Title has been updated"
+            messagebox.showinfo(title="Video Updated", message=message)
+            self.rename_win.destroy()
+            self.list_titles_callback()
+        else:
+            message = response.content
+            messagebox.showinfo(title="Error", message=message)
+
     def delete_callback(self):
         """ Deletes selected video from the library. """
         index = self._main_window.get_index()   # returns index of title in listbox
@@ -81,12 +125,12 @@ class MainController(tk.Frame):
 
             if del_response.status_code == 200:
                 msg_str = video['title'] + " has been deleted from library"
-                messagebox.showinfo(title="Song Added", message=msg_str)
+                messagebox.showinfo(title="Video Deleted", message=msg_str)
                 self.list_titles_callback()
                 os.remove(video['pathname'] + filename)
             else:
                 msg_str = del_response.content
-                messagebox.showinfo(title="Song Deleted", message=msg_str)
+                messagebox.showinfo(title="Error", message=msg_str)
 
 
 if __name__ == "__main__":
