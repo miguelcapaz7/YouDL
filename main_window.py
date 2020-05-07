@@ -8,6 +8,7 @@ class MainWindow(Frame):
         """ Initialize Main Application """
         Frame.__init__(self, parent)
         parent.title('Video Downloader')
+        parent.configure(bg='gray15')
 
         # add a menu here
         main_menu = Menu(parent)
@@ -20,34 +21,60 @@ class MainWindow(Frame):
         file_menu.add_command(label="Exit", command=self.quit)
 
         # define frames here
-        left_frame = Frame(parent)
-        left_frame.pack(side=LEFT)
-        right_frame = Frame(parent)
-        right_frame.pack(side=RIGHT)
+        left_frame = Frame(parent, bg='gray37')
+        left_frame.pack(side=TOP)
+        right_frame = Frame(parent, bg='gray15')
+        right_frame.pack()
+        bottom_frame = Frame(parent)
+        bottom_frame.pack(side=BOTTOM)
+        space_label6 = Label(bottom_frame, text="", bg='gray15')
+        space_label6.pack(side=BOTTOM)
+        # bottom_frame = Frame(parent)
+        # bottom_frame
         # define labels here
-        enter_label = Label(left_frame, text="Enter Link: ")
+        space_label7 = Label(left_frame, text="", bg='gray37')
+        space_label7.pack(side=TOP)
+        enter_label = Label(left_frame, text="Enter Link: ", bg='gray37')
         enter_label.pack(side=LEFT)
         # define entry box here
         self.entry_link = Entry(left_frame, width="40")
         self.entry_link.pack(side=LEFT)
+        space_label = Label(left_frame, text="    ", bg='gray37')
+        space_label.pack(side=LEFT)
+        # space_label5 = Label(left_frame, text="lol   ")
+        # space_label5.pack(side=BOTTOM)
+        space_label5 = Label(right_frame, text="", bg='gray15')
+        space_label5.pack(side=TOP)
+
 
         # (optional) we can add a scrollbar for listbox here
         self.listbox = Listbox(right_frame, height="30", width="50")
-        self.listbox.pack()
+        self.listbox.pack(side=TOP)
+
         # define buttons here
-        download_button = Button(left_frame, text="Download", fg="white", bg="black")
+        download_button = Button(left_frame, text="Download", fg="white", bg="RoyalBlue1")
         download_button.bind("<Button-1>", contoller.download_callback)
-        download_button.pack(side=TOP)
+        download_button.pack(side=LEFT)
+        space_label2 = Label(left_frame, text=" ", bg='gray37')
+        space_label2.pack(side=LEFT)
 
-        rename_button = Button(left_frame, text="Rename", fg="white", bg="black")
+        space_label4 = Label(right_frame, text=" " * 25, bg='gray15')
+        space_label4.pack(side=TOP)
+        rename_button = Button(right_frame, text="Rename", fg="white", bg="RoyalBlue1")
        #rename_button.bind("<Button-1>", contoller.rename_callback)
-        rename_button.pack(side=BOTTOM)
+        rename_button.pack(side=LEFT)
 
-        play_button = Button(left_frame, text="Play", fg="white", bg="green")
-        play_button.pack(side=BOTTOM)
+        space_label3 = Label(right_frame, text=" " * 25, bg='gray15')
+        space_label3.pack(side=LEFT)
 
-        delete_button = Button(left_frame, text="Delete", fg="white", bg="red")
-        delete_button.pack(side=BOTTOM)
+        play_button = Button(right_frame, text="Play", fg="white", bg="green")
+        play_button.pack(side=LEFT)
+
+        delete_button = Button(right_frame, text="Delete", fg="white", bg="red")
+        delete_button.pack(side=RIGHT)
+
+        space_label5 = Label(right_frame, text="" * 25, bg='gray15')
+        space_label5.pack(side=BOTTOM)
 
     # methods are defined here (outside of __init__() )
     def insert_to_listbox(self, titles):
