@@ -36,6 +36,33 @@ def add_video():
     return response
 
 
+@app.route('/videos/title/<string:filename>', methods=['PUT'])
+def update_title(filename):
+    """ Updates an the rating of a song in Song Manager """
+    content = request.json
+
+    try:
+        video = youtube_mgr.get_video(filename)
+        if 'title' in content.keys():
+            video.title = content['title']
+        youtube_mgr.update_video(video)
+
+        response = app.response_class(
+            status=200
+        )
+    except ValueError as e:
+        status_code = 400
+        if str(e) == "Video does not exist":
+            status_code = 404
+
+        response = app.response_class(
+            response=str(e),
+            status=status_code
+        )
+
+    return response
+
+
 @app.route('/videos/<string:filename>', methods=['GET'])
 def get_video(filename):
     """ Gets an existing video from the YouTube Manager """
