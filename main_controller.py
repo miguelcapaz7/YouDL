@@ -1,4 +1,5 @@
 from pytube import YouTube
+import pytube
 import tkinter as tk
 from tkinter import messagebox
 from main_window import MainWindow
@@ -29,26 +30,30 @@ class MainController(tk.Frame):
         """Downloads a YouTube video with the specified URL
         Posts the video data to the API"""
         link = self._main_window.get_link()  # returns the input from the entry box
-        yt = YouTube(link)  # creates a YouTube object
-        video = yt.streams.first()  # chooses the first format available
-        file_location = video.download(os.getcwd() +
-                                   "\\YouTube_Downloads")  # downloads the video to the
-                                                            # specified directory
+        if link == "":
+            msg = "Please enter a valid YouTube URL"
+            messagebox.showinfo(title="Error", message=msg)
+        else:
+            yt = YouTube(link)  # creates a YouTube object
+            video = yt.streams.first()  # chooses the first format available
+            file_location = video.download(os.getcwd() +
+                                           "\\YouTube_Downloads")  # downloads the video to the
+                                                                    # specified directory
 
-        # creates a dictionary with the videos properties
-        data = {'title': yt.title,
-                'author': yt.author,
-                'resolution': video.resolution,
-                'frame_rate': video.fps,
-                'pathname': os.getcwd() + "\\YouTube_Downloads\\",
-                'filename': os.path.basename(file_location)
-                }
+            # creates a dictionary with the videos properties
+            data = {'title': yt.title,
+                    'author': yt.author,
+                    'resolution': video.resolution,
+                    'frame_rate': video.fps,
+                    'pathname': os.getcwd() + "\\YouTube_Downloads\\",
+                    'filename': os.path.basename(file_location)
+                    }
 
-        # posts data to API
-        requests.post("http://localhost:5000/videos", json=data)
-        msg = "Video has been downloaded."
-        messagebox.showinfo(title="Downloaded", message=msg)
-        self.list_titles_callback()
+            # posts data to API
+            requests.post("http://localhost:5000/videos", json=data)
+            msg = "Video has been downloaded."
+            messagebox.showinfo(title="Downloaded", message=msg)
+            self.list_titles_callback()
 
     def list_titles_callback(self):
         """ Lists video titles in listbox.
@@ -91,37 +96,41 @@ class MainController(tk.Frame):
         """Updates the title of the video - sends request to API"""
         index = self._main_window.get_index()
         form_data = self.rename.get_form_data()
-        get_response = requests.get("http://localhost:5000/videos/all")
-        video_list = get_response.json()
-        video = video_list[index]
-
-        response = requests.put("http://localhost:5000/videos/title/" +
-                                video['filename'], json=form_data)
-
-        if response.status_code == 200:
-            message = "Video Title has been updated"
-            messagebox.showinfo(title="Video Updated", message=message)
-            self.rename_win.destroy()
-            self.list_titles_callback()
-        else:
-            message = response.content
+        if form_data['title'] == "":
+            message = "Field cannot be left empty"
             messagebox.showinfo(title="Error", message=message)
+        else:
+            get_response = requests.get("http://localhost:5000/videos/all")
+            video_list = get_response.json()
+            video = video_list[index]
+
+            response = requests.put("http://localhost:5000/videos/title/" +
+                                    video['filename'], json=form_data)
+
+            if response.status_code == 200:
+                message = "Video Title has been updated"
+                messagebox.showinfo(title="Video Updated", message=message)
+                self.rename_win.destroy()
+                self.list_titles_callback()
+            else:
+                message = response.content
+                messagebox.showinfo(title="Error", message=message)
 
     def delete_callback(self, event):
         """ Deletes selected video from the library. """
-        index = self._main_window.get_index()   # returns index of title in listbox
-        if self._main_window.get_title() == "":    # checks if you selected a video before deleting
+        index = self._main_window.get_index()  # returns index of title in listbox
+        if self._main_window.get_title() == "":  # checks if you selected a video before deleting
             msg_str = "You must select a video first."
             messagebox.showinfo(title="Error", message=msg_str)
         else:
             # gets a list of all the videos in the database
             get_response = requests.get("http://localhost:5000/videos/all")
             video_list = get_response.json()
-            video = video_list[index]   # gets the specific video you chose
+            video = video_list[index]  # gets the specific video you chose
             filename = video['filename']
             del_response = requests.delete(
-                        "http://localhost:5000/videos/" + filename
-                        )   # sends a delete request to the API
+                "http://localhost:5000/videos/" + filename
+            )  # sends a delete request to the API
 
             if del_response.status_code == 200:
                 msg_str = video['title'] + " has been deleted from library"
