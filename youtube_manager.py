@@ -36,6 +36,22 @@ class YouTubeManager:
 
         return song_id
 
+    def update_video(self, video):
+        """ Updates the rating of the song """
+
+        if video is None or not isinstance(video, YouTubeVideo):
+            raise ValueError("Invalid YouTube Object")
+
+        session = self._db_session()
+
+        existing_video = session.query(YouTubeVideo).filter(
+            YouTubeVideo.id == video.id).first()
+        if existing_video is None:
+            raise ValueError("YouTube Video does not exist")
+        existing_video.update_title(video)
+        session.commit()
+        session.close()
+
     def get_video(self, filename):
         """ Return YouTubeVideo object matching ID"""
         if filename is None or type(filename) != str:
