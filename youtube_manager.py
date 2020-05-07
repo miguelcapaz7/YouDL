@@ -37,7 +37,7 @@ class YouTubeManager:
         return song_id
 
     def update_video(self, video):
-        """ Updates the rating of the song """
+        """ Updates the title and stores in DB """
 
         if video is None or not isinstance(video, YouTubeVideo):
             raise ValueError("Invalid YouTube Object")
