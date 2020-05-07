@@ -38,7 +38,7 @@ def add_video():
 
 @app.route('/videos/title/<string:filename>', methods=['PUT'])
 def update_title(filename):
-    """ Updates an the rating of a song in Song Manager """
+    """ Updates the title in YouTube Manager """
     content = request.json
 
     try:
