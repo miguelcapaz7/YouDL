@@ -124,6 +124,7 @@ def delete_video(filename):
             response=str(e),
             status=status_code
         )
+    return response
 
 
 if __name__ == "__main__":
