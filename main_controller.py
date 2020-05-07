@@ -64,7 +64,7 @@ class MainController(tk.Frame):
         # inserts the titles to the tkinter listbox
         self._main_window.insert_to_listbox(self._video_titles)
 
-    def play_video(self):
+    def play_video(self, event):
         """Plays the selected video"""
         index = self._main_window.get_index()
         if self._main_window.get_title() == "":
@@ -77,7 +77,7 @@ class MainController(tk.Frame):
             file_location = video['pathname'] + video['filename']
             os.startfile(file_location)
 
-    def rename_window_popup(self):
+    def rename_window_popup(self, event):
         """Launches the Rename Window"""
         title = self._main_window.get_title()
         if title == "":
@@ -107,7 +107,7 @@ class MainController(tk.Frame):
             message = response.content
             messagebox.showinfo(title="Error", message=message)
 
-    def delete_callback(self):
+    def delete_callback(self, event):
         """ Deletes selected video from the library. """
         index = self._main_window.get_index()   # returns index of title in listbox
         if self._main_window.get_title() == "":    # checks if you selected a video before deleting
