@@ -1,11 +1,10 @@
 from pytube import YouTube
-import pytube
 import tkinter as tk
 from tkinter import messagebox
 from main_window import MainWindow
 from rename_window import RenameWindow
+from youtube_api import YouTubeAPI
 import os
-import requests
 
 
 class MainController(tk.Frame):
@@ -16,6 +15,8 @@ class MainController(tk.Frame):
     def __init__(self, parent):
         """Creates the main window"""
         tk.Frame.__init__(self, parent)
+        # creates an instance of YouTubeAPI
+        self.youtube_api = YouTubeAPI()
         # creates an instance of the MainWindow class
         self._root_win = tk.Toplevel()
         self._main_window = MainWindow(self._root_win, self)
@@ -49,10 +50,9 @@ class MainController(tk.Frame):
                     'filename': os.path.basename(file_location)
                     }
 
-            # posts data to API
-            requests.post("http://localhost:5000/videos", json=data)
-            msg = "Video has been downloaded."
-            messagebox.showinfo(title="Downloaded", message=msg)
+            # sends data to API
+            response = self.youtube_api.add_video(data)
+            messagebox.showinfo(title="Downloaded", message=response)
             self.list_titles_callback()
 
     def list_titles_callback(self):
@@ -60,9 +60,8 @@ class MainController(tk.Frame):
         Gets all the videos stored in the database and adds the title"""
         self._video_titles.clear()  # removes all items in the list
 
-        # get request to the API and returns a list of videos
-        response = requests.get("http://localhost:5000/videos/all")
-        video_list = response.json()
+        # calls API and returns a list of videos
+        video_list = self.youtube_api.get_all_videos()
         for video in video_list:
             self._video_titles.append(video['title'])
 
@@ -76,8 +75,7 @@ class MainController(tk.Frame):
             msg_str = "You must select a video first."
             messagebox.showinfo(title="Error", message=msg_str)
         else:
-            response = requests.get("http://localhost:5000/videos/all")
-            video_list = response.json()
+            video_list = self.youtube_api.get_all_videos()
             video = video_list[index]
             file_location = video['pathname'] + video['filename']
             os.startfile(file_location)
@@ -100,20 +98,18 @@ class MainController(tk.Frame):
             message = "Field cannot be left empty"
             messagebox.showinfo(title="Error", message=message)
         else:
-            get_response = requests.get("http://localhost:5000/videos/all")
-            video_list = get_response.json()
+            video_list = self.youtube_api.get_all_videos()
             video = video_list[index]
 
-            response = requests.put("http://localhost:5000/videos/title/" +
-                                    video['filename'], json=form_data)
+            response = self.youtube_api.update_title(form_data, video['filename'])
 
-            if response.status_code == 200:
+            if response == 200:
                 message = "Video Title has been updated"
                 messagebox.showinfo(title="Video Updated", message=message)
                 self.rename_win.destroy()
                 self.list_titles_callback()
             else:
-                message = response.content
+                message = response
                 messagebox.showinfo(title="Error", message=message)
 
     def delete_callback(self, event):
@@ -124,21 +120,20 @@ class MainController(tk.Frame):
             messagebox.showinfo(title="Error", message=msg_str)
         else:
             # gets a list of all the videos in the database
-            get_response = requests.get("http://localhost:5000/videos/all")
-            video_list = get_response.json()
+            video_list = self.youtube_api.get_all_videos()
             video = video_list[index]  # gets the specific video you chose
             filename = video['filename']
-            del_response = requests.delete(
-                "http://localhost:5000/videos/" + filename
-            )  # sends a delete request to the API
 
-            if del_response.status_code == 200:
+            # sends a delete request to the API
+            del_response = self.youtube_api.delete_video(filename)
+
+            if del_response == 200:
                 msg_str = video['title'] + " has been deleted from library"
                 messagebox.showinfo(title="Video Deleted", message=msg_str)
                 self.list_titles_callback()
                 os.remove(video['pathname'] + filename)
             else:
-                msg_str = del_response.content
+                msg_str = del_response
                 messagebox.showinfo(title="Error", message=msg_str)
 
 
