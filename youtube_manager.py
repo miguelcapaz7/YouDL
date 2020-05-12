@@ -31,10 +31,10 @@ class YouTubeManager:
 
         session.commit()
 
-        song_id = new_video.title + " has been added"
+        video_id = new_video.title + " has been downloaded."
         session.close()
 
-        return song_id
+        return video_id
 
     def update_video(self, video):
         """ Updates the title and stores in DB """
