@@ -1,9 +1,5 @@
-from flask import Flask, request
 from youtube_video import YouTubeVideo
 from youtube_manager import YouTubeManager
-import json
-
-app = Flask(__name__)
 
 # Database File
 YOUTUBE_DB = 'youtube.sqlite'
@@ -12,120 +8,78 @@ YOUTUBE_DB = 'youtube.sqlite'
 youtube_mgr = YouTubeManager(YOUTUBE_DB)
 
 
-@app.route('/videos', methods=['POST'])
-def add_video():
-    """ Adds a video to the db """
-    content = request.json
+class YouTubeAPI:
+    """Receives data from controller and communicates with DB"""
 
-    try:
-        video = YouTubeVideo(content['title'], content['author'], content['resolution'],
-                        content['frame_rate'], content['pathname'], content['filename'])
+    def __init__(self):
+        """Define properties for YouTubeAPI class"""
+        self.youtube_mgr = youtube_mgr
 
-        video_id = youtube_mgr.add_video(video)
+    def add_video(self, video_dict):
+        """ Adds a video to the db """
+        content = video_dict
 
-        response = app.response_class(
-            response=str(video_id),
-            status=200
-        )
-    except ValueError as e:
-        response = app.response_class(
-            response=str(e),
-            status=400
-        )
+        try:
+            video = YouTubeVideo(content['title'], content['author'], content['resolution'],
+                                 content['frame_rate'], content['pathname'], content['filename'])
+            video_id = self.youtube_mgr.add_video(video)
 
-    return response
-
-
-@app.route('/videos/title/<string:filename>', methods=['PUT'])
-def update_title(filename):
-    """ Updates the title in YouTube Manager """
-    content = request.json
-
-    try:
-        video = youtube_mgr.get_video(filename)
-        if 'title' in content.keys():
-            video.title = content['title']
-        youtube_mgr.update_video(video)
-
-        response = app.response_class(
-            status=200
-        )
-    except ValueError as e:
-        status_code = 400
-        if str(e) == "Video does not exist":
-            status_code = 404
-
-        response = app.response_class(
-            response=str(e),
-            status=status_code
-        )
-
-    return response
-
-
-@app.route('/videos/<string:filename>', methods=['GET'])
-def get_video(filename):
-    """ Gets an existing video from the YouTube Manager """
-
-    try:
-        video = youtube_mgr.get_video(filename)
-
-        response = app.response_class(
-            status=200,
-            response=json.dumps(video.meta_data()),
-            mimetype='application/json'
-        )
-
-        return response
-    except ValueError as e:
-        response = app.response_class(
-            response=str(e),
-            status=400
-        )
+            response = str(video_id)
+        except ValueError as e:
+            response = str(e)
 
         return response
 
+    def update_title(self, form_data, filename):
+        """ Updates the title in YouTube Manager """
+        content = form_data
 
-@app.route('/videos/all', methods=['GET'])
-def get_all_videos():
-    """ Gets all videos in the YouTube Manager """
-    videos = youtube_mgr.get_all_videos()
+        try:
+            video = self.youtube_mgr.get_video(filename)
+            if 'title' in content.keys():
+                video.title = content['title']
+            self.youtube_mgr.update_video(video)
 
-    video_list = []
+            response = 200
+        except ValueError as e:
+            response = str(e)
 
-    for video in videos:
-        video_list.append(video.meta_data())
+        return response
 
-    response = app.response_class(
-        status=200,
-        response=json.dumps(video_list),
-        mimetype='application/json'
-    )
+    def get_video(self, filename):
+        """ Gets an existing video from the YouTube Manager """
 
-    return response
+        try:
+            video = self.youtube_mgr.get_video(filename)
 
+            response = video.meta_data()
 
-@app.route('/videos/<string:filename>', methods=['DELETE'])
-def delete_video(filename):
-    """ Delete an existing video from the YouTube Manager """
+            return response
+        except ValueError as e:
+            response = str(e)
 
-    try:
-        youtube_mgr.delete_video(filename)
+            return response
 
-        response = app.response_class(
-            status=200
-        )
-    except ValueError as e:
-        status_code = 400
-        if str(e) == "Video does not exist":
-            status_code = 404
+    def get_all_videos(self):
+        """ Gets all videos in the YouTube Manager """
+        videos = self.youtube_mgr.get_all_videos()
 
-        response = app.response_class(
-            response=str(e),
-            status=status_code
-        )
-    return response
+        video_list = []
 
+        for video in videos:
+            video_list.append(video.meta_data())
 
-if __name__ == "__main__":
-    app.run()
+        response = video_list
+
+        return response
+
+    def delete_video(self, filename):
+        """ Delete an existing video from the YouTube Manager """
+        try:
+            self.youtube_mgr.delete_video(filename)
+            response = 200
+
+        except ValueError as e:
+            response = str(e)
+
+        return response
