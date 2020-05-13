@@ -70,13 +70,16 @@ class MainWindow(Frame):
         play_button = ttk.Button(right_frame, text="Play")
         play_button.bind("<Button-1>", contoller.play_video)
         play_button.pack(side=LEFT)
+        
+        space_label5 = ttk.Label(right_frame, text=" " * 25, background='gray15')
+        space_label5.pack(side=LEFT)
 
         delete_button = ttk.Button(right_frame, text="Delete")
         delete_button.bind("<Button-1>", contoller.delete_callback)
         delete_button.pack(side=RIGHT)
 
-        space_label5 = ttk.Label(right_frame, text="" * 25, background='gray15')
-        space_label5.pack(side=BOTTOM)
+        space_label6 = ttk.Label(right_frame, text="" * 25, background='gray15')
+        space_label6.pack(side=BOTTOM)
 
     # methods are defined here (outside of __init__() )
     def insert_to_listbox(self, titles):
