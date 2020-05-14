@@ -40,6 +40,12 @@ class MainController(tk.Frame):
                 fps = self.__validate_fps()
                 streams_list = self.__validate_video(yt, format, res, fps)
                 video = streams_list[0]
+                # Checks if the file already exists in the directory
+                for clip in self.youtube_api.get_all_videos():
+                    file, extension = clip['filename'].split(".")
+                    if yt.title == clip['title'] and yt.author == clip['author'] and \
+                            path == clip['pathname'] and extension == format:
+                        raise ValueError("File already exists")
                 file_location = video.download(path)
 
                 data = {'title': yt.title,
@@ -51,12 +57,17 @@ class MainController(tk.Frame):
                         }
 
                 response = self.youtube_api.add_video(data)
-                messagebox.showinfo(title="Downloaded", message=response)
+                msg = "Your video has been downloaded"
+                messagebox.showinfo(title="Downloaded", message=msg)
                 self.download_win.destroy()
                 self.list_titles_callback()
             else:
                 streams_list, path = self.__validate_audio(yt)
                 video = streams_list[0]
+                for clip in self.youtube_api.get_all_videos():
+                    if yt.title == clip['title'] and yt.author == clip['author'] \
+                            and path == clip["pathname"]:
+                        raise ValueError("File already exists")
                 file_location = video.download(path)
                 file_name, extension = os.path.basename(file_location).split(".")
                 file = file_name + ".mp3"
@@ -70,7 +81,8 @@ class MainController(tk.Frame):
                         'filename': file
                         }
                 response = self.youtube_api.add_video(data)
-                messagebox.showinfo(title="Downloaded", message=response)
+                msg = "Your video has been downloaded"
+                messagebox.showinfo(title="Downloaded", message=msg)
                 self.download_win.destroy()
                 self.list_titles_callback()
         except ValueError as e:
@@ -184,7 +196,7 @@ class MainController(tk.Frame):
             video_list = self.youtube_api.get_all_videos()
             video = video_list[index]
 
-            response = self.youtube_api.update_title(form_data, video['filename'])
+            response = self.youtube_api.update_title(form_data, video['pathname'], video['filename'])
 
             if response == 200:
                 message = "Video Title has been updated"
@@ -208,7 +220,7 @@ class MainController(tk.Frame):
             filename = video['filename']
 
             # sends a delete request to the API
-            del_response = self.youtube_api.delete_video(filename)
+            del_response = self.youtube_api.delete_video(video['pathname'], filename)
 
             if del_response == 200:
                 msg_str = video['title'] + " has been deleted from library"
