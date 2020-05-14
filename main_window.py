@@ -51,8 +51,8 @@ class MainWindow(Frame):
         self.listbox.pack(side=TOP)
 
         # define buttons here
-        download_button = Button(left_frame, text="Download", fg="white", bg="RoyalBlue1")
-        download_button.bind("<Button-1>", contoller.download_callback)
+        download_button = Button(left_frame, text="Next", fg="white", bg="RoyalBlue1",
+                                 command=contoller.download_win_popup)
         download_button.pack(side=LEFT)
         space_label2 = Label(left_frame, text=" ", bg='gray37')
         space_label2.pack(side=LEFT)
