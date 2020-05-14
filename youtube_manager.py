@@ -23,7 +23,7 @@ class YouTubeManager:
             raise ValueError("Invalid YouTube Object")
 
         for video in self.get_all_videos():
-            if new_video.title == video.title and new_video.author == video.author:
+            if new_video.pathname == video.pathname and new_video.filename == video.filename:
                 raise ValueError("Video already exists")
 
         session = self._db_session()
@@ -52,15 +52,18 @@ class YouTubeManager:
         session.commit()
         session.close()
 
-    def get_video(self, filename):
+    def get_video(self, pathname, filename):
         """ Return YouTubeVideo object matching ID"""
         if filename is None or type(filename) != str:
             raise ValueError("Invalid Filename")
 
+        if pathname is None or type(pathname) != str:
+            raise ValueError("Invalid Pathname")
+
         session = self._db_session()
 
         for video in self.get_all_videos():
-            if filename == video.filename:
+            if pathname == video.pathname and filename == video.filename:
                 session.close()
                 return video
 
@@ -74,10 +77,12 @@ class YouTubeManager:
 
         return all_videos
 
-    def delete_video(self, filename):
+    def delete_video(self, pathname, filename):
         """ Deletes a video from the database """
         if filename is None or type(filename) != str:
             raise ValueError("Invalid Filename")
+        if pathname is None or type(pathname) != str:
+            raise ValueError("Invalid Pathname")
 
         session = self._db_session()
 
@@ -86,7 +91,7 @@ class YouTubeManager:
                 session.close()
                 raise ValueError("Video does not exist")
 
-            if filename == video.filename:
+            if pathname == video.pathname and filename == video.filename:
                 session.delete(video)
                 session.commit()
 

@@ -30,12 +30,12 @@ class YouTubeAPI:
 
         return response
 
-    def update_title(self, form_data, filename):
+    def update_title(self, form_data, pathname, filename):
         """ Updates the title in YouTube Manager """
         content = form_data
 
         try:
-            video = self.youtube_mgr.get_video(filename)
+            video = self.youtube_mgr.get_video(pathname, filename)
             if 'title' in content.keys():
                 video.title = content['title']
             self.youtube_mgr.update_video(video)
@@ -46,11 +46,11 @@ class YouTubeAPI:
 
         return response
 
-    def get_video(self, filename):
+    def get_video(self, pathname, filename):
         """ Gets an existing video from the YouTube Manager """
 
         try:
-            video = self.youtube_mgr.get_video(filename)
+            video = self.youtube_mgr.get_video(pathname, filename)
 
             response = video.meta_data()
 
@@ -73,10 +73,10 @@ class YouTubeAPI:
 
         return response
 
-    def delete_video(self, filename):
+    def delete_video(self, pathname, filename):
         """ Delete an existing video from the YouTube Manager """
         try:
-            self.youtube_mgr.delete_video(filename)
+            self.youtube_mgr.delete_video(pathname, filename)
             response = 200
 
         except ValueError as e:
