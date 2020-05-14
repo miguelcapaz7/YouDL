@@ -1,5 +1,5 @@
 from tkinter import *
-
+from tkinter import ttk
 
 class MainWindow(Frame):
     """ Layout for the Main Window """
@@ -35,7 +35,7 @@ class MainWindow(Frame):
         enter_label = Label(left_frame, text="Enter Link: ", bg='gray37', fg="white")
         enter_label.pack(side=LEFT)
         # define entry box here
-        self.entry_link = Entry(left_frame, width="40")
+        self.entry_link = ttk.Entry(left_frame, width="40")
         self.entry_link.pack(side=LEFT)
         space_label = Label(left_frame, text="    ", bg='gray37')
         space_label.pack(side=LEFT)
