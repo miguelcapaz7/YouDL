@@ -29,8 +29,6 @@ class MainWindow(Frame):
         bottom_frame.pack(side=BOTTOM)
         space_label6 = Label(bottom_frame, text="", bg='gray15')
         space_label6.pack(side=BOTTOM)
-        # bottom_frame = Frame(parent)
-        # bottom_frame
         # define labels here
         space_label7 = Label(left_frame, text="", bg='gray37')
         space_label7.pack(side=TOP)
@@ -41,8 +39,6 @@ class MainWindow(Frame):
         self.entry_link.pack(side=LEFT)
         space_label = Label(left_frame, text="    ", bg='gray37')
         space_label.pack(side=LEFT)
-        # space_label5 = Label(left_frame, text="lol   ")
-        # space_label5.pack(side=BOTTOM)
         space_label5 = Label(right_frame, text="", bg='gray15')
         space_label5.pack(side=TOP)
 
