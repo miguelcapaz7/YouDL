@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import messagebox
 from main_window import MainWindow
 from rename_window import RenameWindow
+from download_window import DownloadWindow
 from youtube_api import YouTubeAPI
 import os
 
@@ -27,33 +28,105 @@ class MainController(tk.Frame):
         # call this function to add all the names to the list at startup
         self.list_titles_callback()
 
-    def download_callback(self, event):
+    def download_callback(self):
         """Downloads a YouTube video with the specified URL
         Posts the video data to the API"""
-        link = self._main_window.get_link()  # returns the input from the entry box
-        if link == "":
-            msg = "Please enter a valid YouTube URL"
-            messagebox.showinfo(title="Error", message=msg)
-        else:
-            yt = YouTube(link)  # creates a YouTube object
-            video = yt.streams.first()  # chooses the first format available
-            file_location = video.download(os.getcwd() +
-                                           "\\YouTube_Downloads")  # downloads the video to the
-                                                                    # specified directory
+        yt = self.download.yt_obj
+        try:
+            if self.download.format_label['text'] != "mp3":
+                path = self.__validate_path()
+                res = self.__validate_res()
+                format = self.__validate_format()
+                fps = self.__validate_fps()
+                streams_list = self.__validate_video(yt, format, res, fps)
+                video = streams_list[0]
+                file_location = video.download(path)
 
-            # creates a dictionary with the videos properties
-            data = {'title': yt.title,
-                    'author': yt.author,
-                    'resolution': video.resolution,
-                    'frame_rate': video.fps,
-                    'pathname': os.getcwd() + "\\YouTube_Downloads\\",
-                    'filename': os.path.basename(file_location)
-                    }
+                data = {'title': yt.title,
+                        'author': yt.author,
+                        'resolution': video.resolution,
+                        'frame_rate': video.fps,
+                        'pathname': path,
+                        'filename': os.path.basename(file_location)
+                        }
 
-            # sends data to API
-            response = self.youtube_api.add_video(data)
-            messagebox.showinfo(title="Downloaded", message=response)
-            self.list_titles_callback()
+                response = self.youtube_api.add_video(data)
+                messagebox.showinfo(title="Downloaded", message=response)
+                self.download_win.destroy()
+                self.list_titles_callback()
+            else:
+                streams_list, path = self.__validate_audio(yt)
+                video = streams_list[0]
+                file_location = video.download(path)
+                file_name, extension = os.path.basename(file_location).split(".")
+                file = file_name + ".mp3"
+                os.rename(file_location, path + file)
+
+                data = {'title': yt.title,
+                        'author': yt.author,
+                        'resolution': video.resolution,
+                        'frame_rate': video.fps,
+                        'pathname': path,
+                        'filename': file
+                        }
+                response = self.youtube_api.add_video(data)
+                messagebox.showinfo(title="Downloaded", message=response)
+                self.download_win.destroy()
+                self.list_titles_callback()
+        except ValueError as e:
+            messagebox.showinfo(title="Error", message=str(e))
+
+    def __validate_path(self):
+        """Checks if a path is chosen"""
+        path = self.download.file_label['text']
+        if path == "":
+            raise ValueError("Pick a file location.")
+        return path
+
+    def __validate_res(self):
+        """Checks if a resolution is chosen"""
+        res = self.download.res_label['text']
+        if res == "":
+            raise ValueError("Pick a resolution")
+        return res
+
+    def __validate_format(self):
+        """Checks if a format is chosen"""
+        format = self.download.format_label['text']
+        if format == "":
+            raise ValueError("Pick a file format")
+        return format
+
+    def __validate_fps(self):
+        """Checks if fps is chosen"""
+        fps = self.download.fps_label['text']
+        if fps == "":
+            raise ValueError("Pick fps")
+        return fps
+
+    def __validate_video(self, yt, format, res, fps):
+        """Validates streams for videos"""
+        streams_list = []
+        for stream in yt.streams:
+            type, extension = stream.mime_type.split("/")
+            if extension == format and stream.resolution == res and stream.fps == fps:
+                streams_list.append(stream)
+        return streams_list
+
+    def __validate_audio(self, yt):
+        """Validates streams for audio"""
+        format = self.download.format_label['text']
+        path = self.download.file_label['text']
+        if path == "":
+            raise ValueError("Pick a file location.")
+        streams_list = []
+        for stream in yt.streams:
+            type, old_extenstion = stream.mime_type.split("/")
+            if type == "audio":
+                new_extention = old_extenstion.replace(old_extenstion, "mp3")
+                if new_extention == format:
+                    streams_list.append(stream)
+        return streams_list, path
 
     def list_titles_callback(self):
         """ Lists video titles in listbox.
@@ -89,6 +162,16 @@ class MainController(tk.Frame):
         else:
             self.rename_win = tk.Toplevel()
             self.rename = RenameWindow(self.rename_win, self, title)
+
+    def download_win_popup(self):
+        """Launches the Download settings window"""
+        if self._main_window.get_link() == "":
+            msg_str = "Please paste a valid YouTube URL"
+            messagebox.showinfo(title="Error", message=msg_str)
+        else:
+            yt_obj = YouTube(self._main_window.get_link())
+            self.download_win = tk.Toplevel()
+            self.download = DownloadWindow(self.download_win, self, yt_obj)
 
     def update_title(self, event):
         """Updates the title of the video - sends request to API"""
