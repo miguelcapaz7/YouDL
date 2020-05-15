@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import filedialog
-
+import tkinter.font as font
 
 class DownloadWindow(Frame):
 
@@ -9,7 +9,7 @@ class DownloadWindow(Frame):
         Frame.__init__(self, parent)
         parent.title('Choose Format')
         parent.configure(bg='gray15')
-
+        myFont = font.Font(size=10, family='Segoe UI')
 
         self.yt_obj = yt_obj
 
@@ -20,7 +20,7 @@ class DownloadWindow(Frame):
         self.mid_frame.grid(row=1, padx=10)
         self.bot_frame.grid(row=2, padx=30, pady=10)
 
-        Label(self.top_frame, text="Choose your download settings", bg='gray15', fg='white') \
+        Label(self.top_frame, text="Choose your download settings", bg='gray15', fg='white', font=myFont) \
             .grid(row=0, column=0, sticky=N)
 
         self.format_listbox = Listbox(self.mid_frame, width=12, height=8)
@@ -32,33 +32,33 @@ class DownloadWindow(Frame):
         self.fps_listbox = Listbox(self.mid_frame, width=12, height=8)
         self.fps_listbox.grid(row=1, column=2)
 
-        Label(self.bot_frame, text="Choose a location for your download", bg='gray15', fg='white') \
+        Label(self.bot_frame, text="Choose a location for your download", bg='gray15', fg='white', font=myFont) \
             .grid(row=0, column=0, sticky=E, padx=5, pady=5)
-        self.browse_button = Button(self.bot_frame, text='Browse', width=10, command=self.get_chosen_path, bg='RoyalBlue1', fg='white', relief='flat')
+        self.browse_button = Button(self.bot_frame, text='Browse', width=10, command=self.get_chosen_path, bg='RoyalBlue1', fg='white', font=myFont)
         self.browse_button.grid(row=1, column=0)
 
-        self.file_label = Label(self.bot_frame, text="", bg='gray15', fg='white')
+        self.file_label = Label(self.bot_frame, text="", bg='gray15', fg='white', font=myFont)
         self.file_label.grid(row=2, column=0)
 
-        self.res_label = Label(self.mid_frame, text="", bg='gray15', fg='white')
+        self.res_label = Label(self.mid_frame, text="", bg='gray15', fg='white', font=myFont)
         self.res_label.grid(row=3, column=0)
 
-        self.format_label = Label(self.mid_frame, text="", bg='gray15', fg='white')
+        self.format_label = Label(self.mid_frame, text="", bg='gray15', fg='white', font=myFont)
         self.format_label.grid(row=3, column=1)
 
-        self.fps_label = Label(self.mid_frame, text="", bg='gray15', fg='white')
+        self.fps_label = Label(self.mid_frame, text="", bg='gray15', fg='white', font=myFont)
         self.fps_label.grid(row=3, column=2)
 
-        self.res_button = Button(self.mid_frame, text='Resolution', relief='flat', width=9, command=self.get_res, bg='RoyalBlue1', fg='white')
+        self.res_button = Button(self.mid_frame, text='Resolution', width=9, command=self.get_res, bg='RoyalBlue1', fg='white', font=myFont)
         self.res_button.grid(row=2, column=0)
 
-        self.format_button = Button(self.mid_frame, text='Format', relief='flat', width=9, command=self.get_format, bg='RoyalBlue1', fg='white')
+        self.format_button = Button(self.mid_frame, text='Format', width=9, command=self.get_format, bg='RoyalBlue1', fg='white', font=myFont)
         self.format_button.grid(row=2, column=1)
 
-        self.fps_button = Button(self.mid_frame, text='FPS', relief='flat', width=9, command=self.get_fps, bg='RoyalBlue1', fg='white')
+        self.fps_button = Button(self.mid_frame, text='FPS', width=9, command=self.get_fps, bg='RoyalBlue1', fg='white', font=myFont)
         self.fps_button.grid(row=2, column=2)
 
-        self.download = Button(self.bot_frame, text='Download', relief='flat', width=10, command=controller.download_callback, bg='RoyalBlue1', fg='white')
+        self.download = Button(self.bot_frame, text='Download', width=10, command=controller.download_callback, bg='RoyalBlue1', fg='white', font=myFont)
         self.download.grid(row=3, column=0)
 
         self.insert_formats_to_listbox()
