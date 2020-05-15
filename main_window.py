@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk
 import tkinter.font as font
 
+
 class MainWindow(Frame):
     """ Layout for the Main Window """
 
@@ -16,7 +17,6 @@ class MainWindow(Frame):
         main_menu = Menu(parent)
         parent.config(menu=main_menu)
         main_menu.add_command(label="Exit", command=self.quit, font=myFont)
-
 
         # define frames here
         left_frame = Frame(parent, bg='gray37')
