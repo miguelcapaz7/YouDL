@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 
+
 class RenameWindow(Frame):
     """ Layout for the Main Window """
 
