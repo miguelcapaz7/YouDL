@@ -11,8 +11,7 @@ class MainWindow(Frame):
         myFont = font.Font(size=10, family='Segoe UI')
         Frame.__init__(self, parent)
         parent.title('YouDL')
-        parent.configure(bg='gray15', font=myFont)
-       
+        parent.configure(bg='gray15')
 
         # add a menu here
         main_menu = Menu(parent)
@@ -46,7 +45,8 @@ class MainWindow(Frame):
         self.listbox.pack(side=TOP)
 
         # define buttons here
-        download_button = Button(left_frame, text="Next", relief='flat', fg="white", bg="RoyalBlue1", command=contoller.download_win_popup, font=myFont)
+        download_button = Button(left_frame, text="Next", relief='flat', fg="white", bg="RoyalBlue1",
+                                 command=contoller.download_win_popup, font=myFont)
         download_button.pack(side=LEFT)
         space_label2 = Label(left_frame, text=" ", bg='gray37')
         space_label2.pack(side=LEFT)
