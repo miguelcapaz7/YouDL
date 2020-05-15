@@ -12,14 +12,14 @@ class DownloadWindow(Frame):
 
         self.yt_obj = yt_obj
 
-        self.top_frame = Frame(self.master)
-        self.mid_frame = Frame(self.master)
-        self.bot_frame = Frame(self.master)
+        self.top_frame = Frame(self.master, bg='gray15')
+        self.mid_frame = Frame(self.master, bg='gray15')
+        self.bot_frame = Frame(self.master, bg='gray15')
         self.top_frame.grid(row=0, padx=10)
         self.mid_frame.grid(row=1, padx=10)
         self.bot_frame.grid(row=2, padx=30, pady=10)
 
-        Label(self.top_frame, text="Choose your download settings") \
+        Label(self.top_frame, text="Choose your download settings", bg='gray15', fg='white') \
             .grid(row=0, column=0, sticky=N)
 
         self.format_listbox = Listbox(self.mid_frame, width=12, height=8)
@@ -31,33 +31,33 @@ class DownloadWindow(Frame):
         self.fps_listbox = Listbox(self.mid_frame, width=12, height=8)
         self.fps_listbox.grid(row=1, column=2)
 
-        Label(self.bot_frame, text="Choose a location for your downloaded video") \
+        Label(self.bot_frame, text="Choose a location for your download", bg='gray15', fg='white') \
             .grid(row=0, column=0, sticky=E, padx=5, pady=5)
-        self.browse_button = Button(self.bot_frame, text='Browse', width=10, command=self.get_chosen_path)
+        self.browse_button = Button(self.bot_frame, text='Browse', width=10, command=self.get_chosen_path, bg='RoyalBlue1', fg='white')
         self.browse_button.grid(row=1, column=0)
 
-        self.file_label = Label(self.bot_frame, text="")
+        self.file_label = Label(self.bot_frame, text="", bg='gray15')
         self.file_label.grid(row=2, column=0)
 
-        self.res_label = Label(self.mid_frame, text="")
+        self.res_label = Label(self.mid_frame, text="", bg='gray15')
         self.res_label.grid(row=3, column=0)
 
-        self.format_label = Label(self.mid_frame, text="")
+        self.format_label = Label(self.mid_frame, text="", bg='gray15')
         self.format_label.grid(row=3, column=1)
 
-        self.fps_label = Label(self.mid_frame, text="")
+        self.fps_label = Label(self.mid_frame, text="", bg='gray15')
         self.fps_label.grid(row=3, column=2)
 
-        self.res_button = Button(self.mid_frame, text='Resolution', width=9, command=self.get_res)
+        self.res_button = Button(self.mid_frame, text='Resolution', width=9, command=self.get_res, bg='RoyalBlue1', fg='white')
         self.res_button.grid(row=2, column=0)
 
-        self.format_button = Button(self.mid_frame, text='Format', width=9, command=self.get_format)
+        self.format_button = Button(self.mid_frame, text='Format', width=9, command=self.get_format, bg='RoyalBlue1', fg='white')
         self.format_button.grid(row=2, column=1)
 
-        self.fps_button = Button(self.mid_frame, text='FPS', width=9, command=self.get_fps)
+        self.fps_button = Button(self.mid_frame, text='FPS', width=9, command=self.get_fps, bg='RoyalBlue1', fg='white')
         self.fps_button.grid(row=2, column=2)
 
-        self.download = Button(self.bot_frame, text='Download', width=10, command=controller.download_callback)
+        self.download = Button(self.bot_frame, text='Download', width=10, command=controller.download_callback, bg='RoyalBlue1', fg='white')
         self.download.grid(row=3, column=0)
 
         self.insert_formats_to_listbox()
