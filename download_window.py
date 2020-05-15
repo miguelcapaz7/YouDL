@@ -49,16 +49,16 @@ class DownloadWindow(Frame):
         self.fps_label = Label(self.mid_frame, text="", bg='gray15', fg='white')
         self.fps_label.grid(row=3, column=2)
 
-        self.res_button = Button(self.mid_frame, text='Resolution', width=9, command=self.get_res, bg='RoyalBlue1', fg='white')
+        self.res_button = Button(self.mid_frame, text='Resolution', relief='flat', width=9, command=self.get_res, bg='RoyalBlue1', fg='white')
         self.res_button.grid(row=2, column=0)
 
-        self.format_button = Button(self.mid_frame, text='Format', width=9, command=self.get_format, bg='RoyalBlue1', fg='white')
+        self.format_button = Button(self.mid_frame, text='Format', relief='flat', width=9, command=self.get_format, bg='RoyalBlue1', fg='white')
         self.format_button.grid(row=2, column=1)
 
-        self.fps_button = Button(self.mid_frame, text='FPS', width=9, command=self.get_fps, bg='RoyalBlue1', fg='white')
+        self.fps_button = Button(self.mid_frame, text='FPS', relief='flat', width=9, command=self.get_fps, bg='RoyalBlue1', fg='white')
         self.fps_button.grid(row=2, column=2)
 
-        self.download = Button(self.bot_frame, text='Download', width=10, command=controller.download_callback, bg='RoyalBlue1', fg='white')
+        self.download = Button(self.bot_frame, text='Download', relief='flat', width=10, command=controller.download_callback, bg='RoyalBlue1', fg='white')
         self.download.grid(row=3, column=0)
 
         self.insert_formats_to_listbox()
