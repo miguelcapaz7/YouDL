@@ -34,7 +34,7 @@ class DownloadWindow(Frame):
 
         Label(self.bot_frame, text="Choose a location for your download", bg='gray15', fg='white') \
             .grid(row=0, column=0, sticky=E, padx=5, pady=5)
-        self.browse_button = Button(self.bot_frame, text='Browse', width=10, command=self.get_chosen_path, bg='RoyalBlue1', fg='white')
+        self.browse_button = Button(self.bot_frame, text='Browse', width=10, command=self.get_chosen_path, bg='RoyalBlue1', fg='white', relief='flat')
         self.browse_button.grid(row=1, column=0)
 
         self.file_label = Label(self.bot_frame, text="", bg='gray15', fg='white')
