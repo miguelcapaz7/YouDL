@@ -13,12 +13,8 @@ class MainWindow(Frame):
         # add a menu here
         main_menu = Menu(parent)
         parent.config(menu=main_menu)
-        file_menu = Menu(main_menu)
-        main_menu.add_cascade(label="File", menu=file_menu)
-        file_menu.add_command(label="No Command Yet", command="")
-        file_menu.add_command(label="No Command Yet", command="")
-        file_menu.add_separator()
-        file_menu.add_command(label="Exit", command=self.quit)
+        main_menu.add_command(label="Exit", command=self.quit)
+
 
         # define frames here
         left_frame = Frame(parent, bg='gray37')

@@ -10,6 +10,7 @@ class DownloadWindow(Frame):
         parent.title('Choose Format')
         parent.configure(bg='gray15')
 
+
         self.yt_obj = yt_obj
 
         self.top_frame = Frame(self.master, bg='gray15')
@@ -36,16 +37,16 @@ class DownloadWindow(Frame):
         self.browse_button = Button(self.bot_frame, text='Browse', width=10, command=self.get_chosen_path, bg='RoyalBlue1', fg='white')
         self.browse_button.grid(row=1, column=0)
 
-        self.file_label = Label(self.bot_frame, text="", bg='gray15')
+        self.file_label = Label(self.bot_frame, text="", bg='gray15', fg='white')
         self.file_label.grid(row=2, column=0)
 
-        self.res_label = Label(self.mid_frame, text="", bg='gray15')
+        self.res_label = Label(self.mid_frame, text="", bg='gray15', fg='white')
         self.res_label.grid(row=3, column=0)
 
-        self.format_label = Label(self.mid_frame, text="", bg='gray15')
+        self.format_label = Label(self.mid_frame, text="", bg='gray15', fg='white')
         self.format_label.grid(row=3, column=1)
 
-        self.fps_label = Label(self.mid_frame, text="", bg='gray15')
+        self.fps_label = Label(self.mid_frame, text="", bg='gray15', fg='white')
         self.fps_label.grid(row=3, column=2)
 
         self.res_button = Button(self.mid_frame, text='Resolution', width=9, command=self.get_res, bg='RoyalBlue1', fg='white')
