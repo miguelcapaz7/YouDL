@@ -9,12 +9,13 @@ class RenameWindow(Frame):
         """ Initialize Main Application """
         Frame.__init__(self, parent)
         parent.title('Rename')
+        parent.configure(bg='gray37')
 
         # define frames
         left_frame = Frame(parent, bg='gray37')
         left_frame.pack(side=TOP)
 
-        right_frame = Frame(parent)
+        right_frame = Frame(parent, bg='gray15')
         right_frame.pack()
 
         # define label that has the title you want to rename

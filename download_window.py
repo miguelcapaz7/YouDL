@@ -8,6 +8,7 @@ class DownloadWindow(Frame):
         """ Initialize the Settings window """
         Frame.__init__(self, parent)
         parent.title('Choose Format')
+        parent.configure(bg='gray15')
 
         self.yt_obj = yt_obj
 

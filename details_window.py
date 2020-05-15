@@ -7,6 +7,7 @@ class DetailsWindow(Frame):
         """ Initialize the Details window """
         Frame.__init__(self, parent)
         parent.title('Details')
+        parent.configure(bg='gray15')
 
         self.mid_frame = Frame(self.master)
         self.mid_frame.grid(row=1, padx=30, pady=10)

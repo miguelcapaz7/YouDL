@@ -69,13 +69,13 @@ class MainWindow(Frame):
         space_label8 = Label(right_frame, text=" " * 12, bg='gray15')
         space_label8.pack(side=LEFT)
 
-        details_button = Button(right_frame, text="Details", relief='flat', fg="white", bg="orange")
+        details_button = Button(right_frame, text="Details", relief='flat', fg="white", bg="RoyalBlue1")
         details_button.bind("<Button-1>", contoller.details_window_popup)
-        details_button.pack(side=LEFT)
+        details_button.pack(side=RIGHT)
 
         delete_button = Button(right_frame, text="Delete", relief='flat', fg="white", bg="red")
         delete_button.bind("<Button-1>", contoller.delete_callback)
-        delete_button.pack(side=RIGHT)
+        delete_button.pack(side=LEFT)
 
         space_label5 = Label(right_frame, text="" * 25, bg='gray15')
         space_label5.pack(side=BOTTOM)
