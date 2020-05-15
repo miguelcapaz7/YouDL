@@ -124,6 +124,8 @@ class MainController(tk.Frame):
             type, extension = stream.mime_type.split("/")
             if extension == format and stream.resolution == res and stream.fps == fps:
                 streams_list.append(stream)
+        if len(streams_list) < 1:
+            raise ValueError("This format is not available. Try picking another format.")
         return streams_list
 
     def __validate_audio(self, yt):
