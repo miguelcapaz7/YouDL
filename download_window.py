@@ -47,16 +47,16 @@ class DownloadWindow(Frame):
         self.fps_label = Label(self.mid_frame, text="")
         self.fps_label.grid(row=3, column=2)
 
-        self.res_button = Button(self.mid_frame, text='Resolution', width=9, command=self.get_res)
+        self.res_button = Button(self.mid_frame, text='Resolution', relief='flat', width=9, command=self.get_res)
         self.res_button.grid(row=2, column=0)
 
-        self.format_button = Button(self.mid_frame, text='Format', width=9, command=self.get_format)
+        self.format_button = Button(self.mid_frame, text='Format', relief='flat', width=9, command=self.get_format)
         self.format_button.grid(row=2, column=1)
 
-        self.fps_button = Button(self.mid_frame, text='FPS', width=9, command=self.get_fps)
+        self.fps_button = Button(self.mid_frame, text='FPS', relief='flat', width=9, command=self.get_fps)
         self.fps_button.grid(row=2, column=2)
 
-        self.download = Button(self.bot_frame, text='Download', width=10, command=controller.download_callback)
+        self.download = Button(self.bot_frame, text='Download', relief='flat', width=10, command=controller.download_callback)
         self.download.grid(row=3, column=0)
 
         self.insert_formats_to_listbox()
