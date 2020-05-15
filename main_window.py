@@ -8,10 +8,11 @@ class MainWindow(Frame):
 
     def __init__(self, parent, contoller):
         """ Initialize Main Application """
-        Frame.__init__(self, parent)
-        parent.title('Video Downloader')
-        parent.configure(bg='gray15')
         myFont = font.Font(size=10, family='Segoe UI')
+        Frame.__init__(self, parent)
+        parent.title('YouDL')
+        parent.configure(bg='gray15', font=myFont)
+       
 
         # add a menu here
         main_menu = Menu(parent)
