@@ -47,7 +47,7 @@ class MainWindow(Frame):
         self.listbox.pack(side=TOP)
 
         # define buttons here
-        download_button = Button(left_frame, text="Next", fg="white", bg="RoyalBlue1",
+        download_button = Button(left_frame, text="Next", relief='flat', fg="white", bg="RoyalBlue1",
                                  command=contoller.download_win_popup)
         download_button.pack(side=LEFT)
         space_label2 = Label(left_frame, text=" ", bg='gray37')
@@ -55,25 +55,25 @@ class MainWindow(Frame):
 
         space_label4 = Label(right_frame, text=" " * 25, bg='gray15')
         space_label4.pack(side=TOP)
-        rename_button = Button(right_frame, text="Rename", fg="white", bg="RoyalBlue1")
+        rename_button = Button(right_frame, text="Rename", relief='flat', fg="white", bg="RoyalBlue1")
         rename_button.bind("<Button-1>", contoller.rename_window_popup)
         rename_button.pack(side=LEFT)
 
         space_label3 = Label(right_frame, text=" " * 12, bg='gray15')
         space_label3.pack(side=LEFT)
 
-        play_button = Button(right_frame, text="Play", fg="white", bg="green")
+        play_button = Button(right_frame, text="Play", relief='flat', fg="white", bg="green")
         play_button.bind("<Button-1>", contoller.play_video)
         play_button.pack(side=LEFT)
 
         space_label8 = Label(right_frame, text=" " * 12, bg='gray15')
         space_label8.pack(side=LEFT)
 
-        details_button = Button(right_frame, text="Details", fg="white", bg="orange")
+        details_button = Button(right_frame, text="Details", relief='flat', fg="white", bg="orange")
         details_button.bind("<Button-1>", contoller.details_window_popup)
         details_button.pack(side=LEFT)
 
-        delete_button = Button(right_frame, text="Delete", fg="white", bg="red")
+        delete_button = Button(right_frame, text="Delete", relief='flat', fg="white", bg="red")
         delete_button.bind("<Button-1>", contoller.delete_callback)
         delete_button.pack(side=RIGHT)
 
