@@ -59,12 +59,19 @@ class MainWindow(Frame):
         rename_button.bind("<Button-1>", contoller.rename_window_popup)
         rename_button.pack(side=LEFT)
 
-        space_label3 = Label(right_frame, text=" " * 25, bg='gray15')
+        space_label3 = Label(right_frame, text=" " * 12, bg='gray15')
         space_label3.pack(side=LEFT)
 
         play_button = Button(right_frame, text="Play", fg="white", bg="green")
         play_button.bind("<Button-1>", contoller.play_video)
         play_button.pack(side=LEFT)
+
+        space_label8 = Label(right_frame, text=" " * 12, bg='gray15')
+        space_label8.pack(side=LEFT)
+
+        details_button = Button(right_frame, text="Details", fg="white", bg="orange")
+        details_button.bind("<Button-1>", contoller.details_window_popup)
+        details_button.pack(side=LEFT)
 
         delete_button = Button(right_frame, text="Delete", fg="white", bg="red")
         delete_button.bind("<Button-1>", contoller.delete_callback)
