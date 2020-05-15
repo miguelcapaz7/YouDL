@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import messagebox
 from main_window import MainWindow
 from rename_window import RenameWindow
+from details_window import DetailsWindow
 from download_window import DownloadWindow
 from youtube_api import YouTubeAPI
 import os
@@ -174,6 +175,18 @@ class MainController(tk.Frame):
         else:
             self.rename_win = tk.Toplevel()
             self.rename = RenameWindow(self.rename_win, self, title)
+
+    def details_window_popup(self, event):
+        """Launches a window with the video details listed"""
+        if self._main_window.get_title() == "":
+            msg_str = "You must select a video first."
+            messagebox.showinfo(title="Error", message=msg_str)
+        else:
+            index = self._main_window.get_index()
+            video_list = self.youtube_api.get_all_videos()
+            video = video_list[index]
+            self.details_win = tk.Toplevel()
+            self.details = DetailsWindow(self.details_win, video)
 
     def download_win_popup(self):
         """Launches the Download settings window"""
