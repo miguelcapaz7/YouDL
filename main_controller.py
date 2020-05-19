@@ -17,8 +17,10 @@ class MainController(tk.Frame):
     def __init__(self, parent):
         """Creates the main window"""
         tk.Frame.__init__(self, parent)
+
         # creates an instance of YouTubeAPI
         self.youtube_api = YouTubeAPI()
+
         # creates an instance of the MainWindow class
         self._root_win = tk.Toplevel()
         self._main_window = MainWindow(self._root_win, self)
@@ -89,44 +91,48 @@ class MainController(tk.Frame):
         except ValueError as e:
             messagebox.showinfo(title="Error", message=str(e))
 
-    def __validate_path(self):
+    def __validate_path(self) -> str:
         """Checks if a path is chosen"""
         path = self.download.file_label['text']
         if path == "":
             raise ValueError("Pick a file location.")
         return path
 
-    def __validate_res(self):
+    def __validate_res(self) -> str:
         """Checks if a resolution is chosen"""
         res = self.download.res_label['text']
         if res == "":
             raise ValueError("Pick a resolution")
         return res
 
-    def __validate_format(self):
+    def __validate_format(self) -> str:
         """Checks if a format is chosen"""
         format = self.download.format_label['text']
         if format == "":
             raise ValueError("Pick a file format")
         return format
 
-    def __validate_fps(self):
+    def __validate_fps(self) -> str:
         """Checks if fps is chosen"""
         fps = self.download.fps_label['text']
         if fps == "":
             raise ValueError("Pick fps")
         return fps
 
-    def __validate_video(self, yt, format, res, fps):
+    def __validate_video(self, yt, format, res, fps) -> list:
         """Validates streams for videos"""
-        streams_list = []
-        for stream in yt.streams:
-            type, extension = stream.mime_type.split("/")
-            if extension == format and stream.resolution == res and stream.fps == fps:
-                streams_list.append(stream)
-        if len(streams_list) < 1:
-            raise ValueError("This format is not available. Try picking another format.")
-        return streams_list
+        try:
+            streams_list = []
+            for stream in yt.streams:
+                type, extension = stream.mime_type.split("/")
+                if extension == format and stream.resolution == res and stream.fps == fps:
+                    streams_list.append(stream)
+            if len(streams_list) < 1:
+                raise ValueError
+            return streams_list
+        except Exception:
+            msg = "This format is not available. Try picking another format."
+            messagebox.showinfo(title="Error", message=msg)
 
     def __validate_audio(self, yt):
         """Validates streams for audio"""
@@ -192,13 +198,13 @@ class MainController(tk.Frame):
 
     def download_win_popup(self):
         """Launches the Download settings window"""
-        if self._main_window.get_link() == "":
-            msg_str = "Please paste a valid YouTube URL"
-            messagebox.showinfo(title="Error", message=msg_str)
-        else:
+        try:
             yt_obj = YouTube(self._main_window.get_link())
             self.download_win = tk.Toplevel()
             self.download = DownloadWindow(self.download_win, self, yt_obj)
+        except Exception:
+            msg_str = "Please paste a valid YouTube URL"
+            messagebox.showinfo(title="Error", message=msg_str)
 
     def update_title(self, event):
         """Updates the title of the video - sends request to API"""

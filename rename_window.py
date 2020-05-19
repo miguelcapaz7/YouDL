@@ -31,7 +31,7 @@ class RenameWindow(Frame):
         save_button.bind("<Button-1>", contoller.update_title)
         save_button.grid(row=1,column=1, padx=5, pady=35)
 
-    def get_form_data(self):
+    def get_form_data(self) -> dict:
         """ Return a dictionary of form field values with updated title """
         return {
             "title": self.entry_name.get()

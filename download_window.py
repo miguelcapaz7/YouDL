@@ -5,6 +5,8 @@ import tkinter.font as font
 
 class DownloadWindow(Frame):
 
+    """Window that shows the video settings for the download"""
+
     def __init__(self, parent, controller, yt_obj):
         """ Initialize the Settings window """
         Frame.__init__(self, parent)
@@ -35,6 +37,7 @@ class DownloadWindow(Frame):
 
         Label(self.bot_frame, text="Choose a location for your download", bg='gray15', fg='white', font=myFont) \
             .grid(row=0, column=0, sticky=E, padx=5, pady=5)
+
         self.browse_button = Button(self.bot_frame, text='Browse', width=10, command=self.get_chosen_path,
                                     bg='RoyalBlue1', fg='white', font=myFont)
         self.browse_button.grid(row=1, column=0)
@@ -51,16 +54,16 @@ class DownloadWindow(Frame):
         self.fps_label = Label(self.mid_frame, text="", bg='gray15', fg='white', font=myFont)
         self.fps_label.grid(row=3, column=2)
 
-        self.res_button = Button(self.mid_frame, text='Resolution', width=9, command=self.get_res, bg='RoyalBlue1',
-                                 fg='white', font=myFont)
+        self.res_button = Button(self.mid_frame, text='Resolution', width=9, command=self.get_res,
+                                 bg='RoyalBlue1', fg='white', font=myFont)
         self.res_button.grid(row=2, column=0)
 
-        self.format_button = Button(self.mid_frame, text='Format', width=9, command=self.get_format, bg='RoyalBlue1',
-                                    fg='white', font=myFont)
+        self.format_button = Button(self.mid_frame, text='Format', width=9, command=self.get_format,
+                                    bg='RoyalBlue1', fg='white', font=myFont)
         self.format_button.grid(row=2, column=1)
 
-        self.fps_button = Button(self.mid_frame, text='FPS', width=9, command=self.get_fps, bg='RoyalBlue1', fg='white',
-                                 font=myFont)
+        self.fps_button = Button(self.mid_frame, text='FPS', width=9, command=self.get_fps,
+                                 bg='RoyalBlue1', fg='white', font=myFont)
         self.fps_button.grid(row=2, column=2)
 
         self.download = Button(self.bot_frame, text='Download', width=10, command=controller.download_callback,

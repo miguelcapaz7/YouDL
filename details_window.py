@@ -4,6 +4,8 @@ import tkinter.font as font
 
 class DetailsWindow(Frame):
 
+    """Window that shows the properties of the video"""
+
     def __init__(self, parent, video_dict):
         """ Initialize the Details window """
         Frame.__init__(self, parent)
