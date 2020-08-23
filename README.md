@@ -9,7 +9,7 @@ Technologies Used:
   - PyCharm IDE
   - Object Oriented Programming
   - Python GUI with Tkinter
-  - PyTube Module
+  - PyTube Module | https://github.com/nficano/pytube
   - Github
   - Travis CI
   - SQLite package
